@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de QR Code Étudiant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #1cc88a;
+            --dark-color: #5a5c69;
+            --light-color: #f8f9fc;
+        }
+        
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            border-bottom: none;
+        }
+        
+        .card-body {
+            padding: 2rem;
+        }
+        
+        .qr-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        #qrcode {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 20px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        #qrcode:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        
+        .student-info {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #d1d3e2;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2e59d9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-success:hover {
+            background-color: #17a673;
+            transform: translateY(-2px);
+        }
+        
+        .badge {
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 50px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        
+        .logo {
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="mb-0 logo"><i class="fas fa-qrcode"></i> UNIVQR</h3>
+      </div>
+      <div class="card-body">
+        <h4 class="mb-4 text-center text-dark">Générateur de QR Code Étudiant</h4>
+        
+        <div class="row">
+          <div class="col-md-6">
+              <div class="form-group mb-4">
+              <label for="lastName" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="lastName" [(ngModel)]="lastName" placeholder="Dupont">
+            </div>
+            
+            <div class="form-group mb-4">
+              <label for="firstName" class="form-label">Prénom</label>
+              <input type="text" class="form-control" id="firstName" [(ngModel)]="firstName" placeholder="Jean">
+            </div>
+            
+          
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="studentId" class="form-label">Numéro étudiant</label>
+                  <input type="text" class="form-control" id="studentId" [(ngModel)]="studentId" placeholder="12345678">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="year" class="form-label">Année d'étude</label>
+                  <select class="form-control" id="year" [(ngModel)]="year" (change)="onYearChange()">
+                    <option value="">Sélectionner...</option>
+                    <option value="L1">Licence 1</option>
+                    <option value="L2">Licence 2</option>
+                    
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group mb-4">
+              <label for="department" class="form-label">Département</label>
+              <select class="form-control" id="department" [(ngModel)]="department" 
+                      (change)="onDepartmentChange()" [disabled]="isDepartmentDisabled">
+                <option value="">Sélectionner un département...</option>
+                <option *ngFor="let dept of departmentsByYear[year]" [value]="dept">{{dept}}</option>
+              </select>
+            </div>
+            
+            <div class="form-group mb-4">
+              <label for="program" class="form-label">Filière</label>
+              <select class="form-control" id="program" [(ngModel)]="program" [disabled]="isProgramDisabled">
+                <option value="">Sélectionner une filière...</option>
+                <option *ngFor="let prog of programsByDepartment[department]" [value]="prog">{{prog}}</option>
+              </select>
+            </div>
+            
+            <button id="generateBtn" class="btn btn-primary w-100 py-3" (click)="generateQRCode()">
+              <i class="fas fa-qrcode me-2"></i>GÉNÉRER LE QR CODE
+            </button>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="qr-container">
+              <div id="qrcode">
+                <qrcode [qrdata]="qrCodeData" 
+                       *ngIf="showQRCode"
+                       [width]="200"
+                       [colorDark]="'#2E59D9'"
+                       [colorLight]="'#ffffff'"
+                       [errorCorrectionLevel]="'H'"></qrcode>
+                <p *ngIf="!showQRCode" class="text-muted text-center">
+                  Votre QR code apparaîtra ici<br><i class="fas fa-arrow-left mt-2" style="font-size: 1.5rem;"></i>
+                </p>
+              </div>
+              
+              <div id="studentInfo" class="student-info fade-in" *ngIf="showStudentInfo">
+                <h5 id="studentName" class="text-center mb-3">{{studentName}}</h5>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>ID Étudiant:</span>
+                  <span id="studentIdDisplay" class="badge bg-primary">{{displayStudentId}}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Département:</span>
+                  <span id="departmentDisplay" class="badge bg-info text-dark">{{displayDepartment}}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Filière:</span>
+                  <span id="programDisplay" class="badge bg-warning text-dark">{{displayProgram}}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span>Année:</span>
+                  <span id="yearDisplay" class="badge bg-secondary">{{displayYear}}</span>
+                </div>
+              </div>
+              
+              <div class="d-grid gap-2 mt-4">
+                <button id="downloadBtn" class="btn btn-success" (click)="downloadQRCode()" [disabled]="isDownloadDisabled">
+                  <i class="fas fa-download me-2"></i>TÉLÉCHARGER
+                </button>
+                <button id="printBtn" class="btn btn-outline-primary" (click)="printQRCode()" [disabled]="isPrintDisabled">
+                  <i class="fas fa-print me-2"></i>IMPRIMER
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <button id="helpBtn" class="btn btn-primary rounded-circle floating-btn" (click)="showHelp()">
+    <i class="fas fa-question"></i>
+  </button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>
