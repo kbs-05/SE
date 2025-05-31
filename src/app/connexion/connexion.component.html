@@ -94,74 +94,53 @@
             </div>
             
             <div class="login-body">
-                <form id="loginForm">
-                    <div class="mb-3 position-relative">
-                        <i class="fas fa-user input-icon"></i>
-                        <input type="text" class="form-control ps-5" id="username" placeholder="Nom d'utilisateur" required>
+                <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+                    <div class="form-group">
+                      <label for="username">Nom d'utilisateur</label>
+                      <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        [(ngModel)]="username" 
+                        required
+                        class="form-control">
                     </div>
-                    
-                    <div class="mb-4 position-relative">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" class="form-control ps-5" id="password" placeholder="Mot de passe" required>
-                        <span class="password-toggle" id="togglePassword">
-                            <i class="fas fa-eye"></i>
-                        </span>
-                    </div>
-                    
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-login text-white" id="loginBtn" routerLink="/generateur">
-                            <span id="btnText">Se connecter</span>
-                            <span id="btnSpinner" class="spinner-border spinner-border-sm d-none"></span>
+                  
+                    <div class="form-group">
+                      <label for="password">Mot de passe</label>
+                      <div class="input-group">
+                        <input 
+                          #passwordInput
+                          type="password" 
+                          id="password" 
+                          name="password" 
+                          [(ngModel)]="password" 
+                          required
+                          class="form-control">
+                        <button 
+                          type="button" 
+                          class="btn btn-outline-secondary" 
+                          (click)="togglePasswordVisibility($event)">
+                          <i class="fa fa-eye"></i>
                         </button>
+                      </div>
                     </div>
-                </form>
+                  
+                    <button 
+                      type="submit" 
+                      class="btn btn-primary" 
+                      [disabled]="!loginForm.valid || isLoading">
+                      <span *ngIf="!isLoading">Se connecter</span>
+                      <span *ngIf="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Connexion...
+                      </span>
+                    </button>
+                  </form>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Afficher/masquer le mot de passe
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const password = document.getElementById('password');
-            const icon = this.querySelector('i');
-            
-            if (password.type === 'password') {
-                password.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                password.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        });
-        
-        // Gestion de la connexion
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const btnText = document.getElementById('btnText');
-            const btnSpinner = document.getElementById('btnSpinner');
-            const loginBtn = document.getElementById('loginBtn');
-            
-            // Simulation de chargement
-            btnText.textContent = 'Connexion...';
-            btnSpinner.classList.remove('d-none');
-            loginBtn.disabled = true;
-            
-            // Simulation de vérification
-            setTimeout(() => {
-                if (username && password) {
-                    // Redirection vers la page scanner
-                    window.location.href = '/scanner';
-                } else {
-                    alert('Veuillez remplir tous les champs');
-                    btnText.textContent = 'Se connecter';
-                    btnSpinner.classList.add('d-none');
-                    loginBtn.disabled = false;
-                }
-            }, 1500);
-        });
-    </script>
+    
 </body>

@@ -14,6 +14,18 @@ import { ESLComponent } from './esl/esl.component';
 import { IASAComponent } from './iasa/iasa.component';
 import { EILL1Component } from './eil.l1/eil.l1.component';
 import { GENERATEURComponent } from './generateur/generateur.component';
+import { provideRouter } from '@angular/router';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideStorage, getStorage } from '@angular/fire/storage';
+import { provideImgixLoader } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { EILTC1Component } from './eil.tc1/eil.tc1.component'; 
+import { QRCodeModule } from 'angularx-qrcode'; 
+
+
 
 @NgModule({
   declarations: [
@@ -28,13 +40,26 @@ import { GENERATEURComponent } from './generateur/generateur.component';
     ESLComponent,
     IASAComponent,
     EILL1Component,
+    EILTC1Component,
+    GENERATEURComponent,
+    
   
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RouterModule.forRoot([]),
+    FormsModule,
+    QRCodeModule,    
   ],
-  providers: [],
+  providers: [
+    provideRouter([]),
+    provideFirebaseApp(() => initializeApp({ /* votre configuration Firebase */ })),
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
+    provideStorage(() => getStorage()),
+    provideImgixLoader('https://yourdomain.imgix.net'),
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

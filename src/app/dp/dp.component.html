@@ -53,10 +53,110 @@
                 text-align: center;
             }
         }
+        .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #0a58ca 0%, #003366 100%);
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  background: rgba(10, 88, 202, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.navbar-nav .nav-link {
+  color: #fff !important;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 5px;
+  background-color: rgba(0, 51, 102, 0.7);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .nav-link.active {
+  background-color: #1cc88a !important;
+  font-weight: bold;
+}
+
+.navbar-nav .nav-link:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+.icon-menu {
+    transition: all 0.3s ease;
+}
+.nav-link:hover .icon-menu {
+    transform: scale(1.2);
+}
+.navbar-logo {
+    height: 40px; 
+    width: auto; 
+    margin-right: 10px; 
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem; 
+    padding: 5px 0; 
+}
+@media (max-width: 768px) {
+    .navbar-logo {
+        height: 35px; 
+    }
+    .navbar-brand {
+        font-size: 1rem; 
+    }
+}
     </style>
 </head>
 <body>
-    <div class="container py-4">
+    <nav class="navbar navbar-expand-lg navbar-dark" [class.scrolled]="isScrolled">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" (click)="toggleMenu()" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" routerLink="/">
+              <img src="/assets/U.jpg" class="navbar-logo" alt="Logo EM GABON" style="max-height: 40px;"> 
+              <span class="d-none d-sm-inline">EM GABON</span> 
+          </a>
+            <div class="collapse navbar-collapse" id="navbarNav" [class.show]="isMenuOpen">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/generateur']" routerLinkActive="active"  (click)="closeMenu()">
+                            <i class="fas fa-qrcode icon-menu"></i> Générateur 
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/dp" routerLinkActive="active"  (click)="closeMenu()">
+                            <i class="fas fa-building icon-menu"></i> Départements
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/scanner" routerLinkActive="active"  (click)="closeMenu()">
+                            <i class="fas fa-camera icon-menu"></i> Scan
+                        </a>
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <div class="container py-4" style="padding-top: 10.5rem !important;">
         <div class="text-center mb-5">
             <h1 class="display-5 fw-bold">Nos Départements</h1>
         </div>

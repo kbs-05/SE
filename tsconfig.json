@@ -1,8 +1,8 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
-{
+{ 
+  
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",  // <-- Ajout crucial pour les paths
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -16,12 +16,19 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "ES2022",
+    "paths": {  // <-- Nouvelle section pour les alias
+      "angularx-qrcode": ["node_modules/angularx-qrcode"],
+      "@app/*": ["src/app/*"]  // Exemple d'alias pratique
+    },
+    "types": ["node"]  // <-- Ajout recommandé
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "include": ["src/**/*.ts"],  // <-- Clarification des fichiers inclus
+  "exclude": ["node_modules"]
 }

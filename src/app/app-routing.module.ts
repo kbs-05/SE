@@ -11,6 +11,8 @@ import { IASAComponent } from './iasa/iasa.component';
 import { IEJComponent } from './iej/iej.component';
 import { EILL1Component } from './eil.l1/eil.l1.component';
 import { GENERATEURComponent } from './generateur/generateur.component';
+import { EILTC1Component } from './eil.tc1/eil.tc1.component';
+
 
 const routes: Routes = [
   { path: '', component: ConnexionComponent},
@@ -24,6 +26,8 @@ const routes: Routes = [
   { path: 'iej', component: IEJComponent},
   { path: 'eil.l1', component: EILL1Component},
   { path: 'generateur', component: GENERATEURComponent},
+  { path: 'eil.tc1', component: EILTC1Component},
+  { path: '', redirectTo: '/generateur', pathMatch: 'full' }
 
 
 ];
